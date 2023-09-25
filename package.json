@@ -1,0 +1,12 @@
+{
+  "name": "user-svr",
+  "version": "1.0.0",
+  "description": "User server for chem app",
+  "main": "index.js",
+  "scripts": {
+    "test": "docker-compose -f ./docker/docker.compose.test.yaml up",
+    "start": "docker-compose -f ./docker.compose.yaml up -d"
+  },
+  "author": "",
+  "license": "ISC"
+}

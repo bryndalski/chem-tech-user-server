@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  user-server-tests:
+    container_name:  user-server-tests
+    restart: on-failure:3
+    image: test/dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    build:
+        context: ../
+        dockerfile: docker/test/dockerfile
+    volumes:
+      - ../server:/server
