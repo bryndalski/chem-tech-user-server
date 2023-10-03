@@ -12,4 +12,9 @@ services:
         context: ../
         dockerfile: docker/dev/dockerfile
     volumes:
-      - ../server/src:/server/src
+      - ../server/src:/server/src 
+    networks:
+      - user-network
+networks:
+  user-network:
+    driver: bridge

@@ -82,7 +82,8 @@
       "^src/(.*)$": "<rootDir>/$1",
       "^@/(.*)$": "<rootDir>/$1",
       "^@decorators": "<rootDir>/decorators/$1",
-      "@guards/(.*)$": "<rootDir>/guards/$1"
+      "@guards/(.*)$": "<rootDir>/guards/$1",
+      "@enums/(.*)$": "<rootDir>/enums/$1"
     }
   }
 }
