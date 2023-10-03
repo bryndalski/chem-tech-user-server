@@ -4,8 +4,6 @@ services:
     container_name:  user-server
     restart: on-failure:3
     image: dev/dockerfile
-    environment:
-      - PORT=3333
     ports:
       - ${PORT}:${PORT}
     env_file:
