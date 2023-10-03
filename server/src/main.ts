@@ -9,6 +9,9 @@ async function bootstrap() {
     type: VersioningType.URI,
     prefix: 'v',
   });
+
+  app.setGlobalPrefix('api'); // Global prefix
+
   await app.listen(process.env.PORT);
 }
 void bootstrap();
