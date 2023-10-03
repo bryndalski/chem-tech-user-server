@@ -7,7 +7,7 @@ services:
     ports:
       - ${PORT}:${PORT}
     env_file:
-      - .env
+      - .env.test
     build:
         context: ../
         dockerfile: docker/test/dockerfile

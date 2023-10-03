@@ -2,6 +2,8 @@
 
 ```
 PORT=3001
+AWS_COGNITO_CLIENT_ID
+AWS_COGNITO_AUTHORITY
 ```
 
 1. Table of contents

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "docker-compose -f ./docker/docker.compose.test.yaml up",
-    "start": "docker-compose -f ./docker.compose.yaml up -d"
+    "start": "docker-compose -f ./docker/docker.compose.yaml up"
   },
   "author": "",
   "license": "ISC"
