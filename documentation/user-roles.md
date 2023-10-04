@@ -7,4 +7,4 @@
 | `admin`        | Administrator        |
 | `user`         | User                 |
 | `guest`        | Guest                |
-| `system admin` | System administrator |
+| `system_admin` | System administrator |

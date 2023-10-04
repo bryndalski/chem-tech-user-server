@@ -20,7 +20,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@decorators": ["src/decorators/*"],
-      "@guards": ["src/guards/*"]
+      "@guards": ["src/guards/*"],
+      "@enums/*": ["src/enums/*"]
     }
   }
 }

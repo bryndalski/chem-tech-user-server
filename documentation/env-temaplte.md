@@ -1,37 +1,56 @@
-# Template for env file
+# Environment Variables Template
 
-```
-PORT=3001
-AWS_COGNITO_CLIENT_ID
-AWS_COGNITO_AUTHORITY
-PREFIX=/api
+This is a template for configuring environment variables in your application.
 
-```
+## Table of Contents
 
-1. Table of contents
-   - [Port](#port)
-   - [Prefix](#prefix)
-   - [AWS_COGNITO_CLIENT_ID](#aws_cognito_client_id)
-   - [AWS_COGNITO_AUTHORITY](#aws_cognito_authority)
+- [Environment Variables Template](#environment-variables-template)
+  - [Table of Contents](#table-of-contents)
+    - [Port](#port)
+    - [AWS Cognito Configuration](#aws-cognito-configuration)
+      - [AWS Cognito Client ID](#aws-cognito-client-id)
+      - [AWS Cognito Authority](#aws-cognito-authority)
+    - [AWS Configuration](#aws-configuration)
+      - [AWS Secret Access Key](#aws-secret-access-key)
+      - [AWS Access Key ID](#aws-access-key-id)
+      - [AWS Default Region](#aws-default-region)
+      - [AWS Cognito User Pool ID](#aws-cognito-user-pool-id)
 
 ### Port
 
-Server port. Default recomanded value is `3001`
+- Description: Server port. The default recommended value is `3001`.
+- Expected Type: `number`
 
-Expected type: `number`
+### AWS Cognito Configuration
 
-### AWS_COGNITO_CLIENT_ID
+#### AWS Cognito Client ID
 
-Aws client id. Can be creaded in cognito console
+- Description: The client ID for AWS Cognito.
+- Example: `your-cognito-client-id`
 
-Expected type: `string`
+#### AWS Cognito Authority
 
-### AWS_COGNITO_AUTHORITY
+- Description: The authority URL for AWS Cognito.
+- Example: `https://cognito-idp.AWS_DEFAULT_REGION.amazonaws.com/AWS_COGNITO_USER_POOL_ID`
 
-Aws authority. Can be creaded in cognito console
+### AWS Configuration
 
-Expected type: `string`
+#### AWS Secret Access Key
 
-### Prefix
+- Description: The secret access key for AWS.
+- Example: `your-secret-access-key`
 
-indicates API prefix. For example for prefix `/api` and endpoint `/users` the full endpoint will be `/api/v1/users`
+#### AWS Access Key ID
+
+- Description: The access key ID for AWS.
+- Example: `your-access-key-id`
+
+#### AWS Default Region
+
+- Description: The default AWS region.
+- Example: `us-east-1`
+
+#### AWS Cognito User Pool ID
+
+- Description: The user pool ID for AWS Cognito.
+- Example: `your-cognito-user-pool-id`

@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.370.0",
     "@nestjs/common": "^10.2.6",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.2.6",
@@ -46,6 +47,7 @@
     "@types/supertest": "^2.0.14",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "amazon-cognito-identity-js": "^6.3.6",
     "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jest": "^27.4.2",
@@ -68,6 +70,10 @@
       "json",
       "ts"
     ],
+    "roots": [
+      ".",
+      "../test"
+    ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
@@ -82,7 +88,8 @@
       "^src/(.*)$": "<rootDir>/$1",
       "^@/(.*)$": "<rootDir>/$1",
       "^@decorators": "<rootDir>/decorators/$1",
-      "@guards/(.*)$": "<rootDir>/guards/$1"
+      "@guards/(.*)$": "<rootDir>/guards/$1",
+      "@enums/(.*)$": "<rootDir>/enums/$1"
     }
   }
 }
