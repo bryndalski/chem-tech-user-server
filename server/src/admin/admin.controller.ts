@@ -1,6 +1,17 @@
 import { Body, Controller, Post, UseGuards, Version } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { CognitoAtuhGuard, CognitoRolesGuard } from '@/guards';
 import { AllowedRoles } from '@/decorators';
 import { Roles } from '@enums/index';
@@ -23,6 +34,25 @@ export class AdminController {
   @ApiBody({
     description: 'Register new user to cognito - required params',
     type: CreateUserDTO,
+  })
+  @ApiCreatedResponse({
+    description: 'User created',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
+  @ApiConflictResponse({
+    description:
+      'User already exists. Both email and phone number must be unique',
+  })
+  @ApiForbiddenResponse({
+    description: 'You are not allowed to create user with this role',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @UseGuards(CognitoRolesGuard)
   create(@Body() createUser: CreateUserDTO, @Groups() userGroups: string[]) {

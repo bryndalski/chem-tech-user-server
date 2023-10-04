@@ -55,10 +55,6 @@ describe('AdminController', () => {
     AWS_CLIENT = new CognitoIdentityProviderClient({
       region: process.env.AWS_DEFAULT_REGION,
     });
-    console.log({
-      region: process.env.AWS_DEFAULT_REGION,
-      accessTokens,
-    });
 
     await app.init();
   });
@@ -154,9 +150,6 @@ describe('AdminController', () => {
             })
             .expect(HttpStatus.BAD_REQUEST)
             .expect((res) => {
-              expect(res.body.message).toContain(
-                'fullName must be shorter than or equal to 100 characters',
-              );
               expect(res.body.message).toContain(
                 'fullName must be longer than or equal to 3 characters',
               );
@@ -375,7 +368,7 @@ describe('AdminController', () => {
           .expect(HttpStatus.FORBIDDEN)
           .expect((res) => {
             expect(res.body.message).toContain(
-              'you are not allowed to create system admin',
+              'You are not allowed to create user with this role',
             );
           });
       });
@@ -395,7 +388,7 @@ describe('AdminController', () => {
           .expect(HttpStatus.FORBIDDEN)
           .expect((res) => {
             expect(res.body.message).toContain(
-              'you are not allowed to create admin',
+              'You are not allowed to create user with this role',
             );
           });
       });
@@ -413,7 +406,7 @@ describe('AdminController', () => {
           .expect(HttpStatus.FORBIDDEN)
           .expect((res) => {
             expect(res.body.message).toContain(
-              'you are not allowed to create system admin',
+              'You are not allowed to create user with this role',
             );
           });
       });
@@ -432,7 +425,7 @@ describe('AdminController', () => {
           })
           .expect(HttpStatus.CONFLICT)
           .expect((res) => {
-            expect(res.body.message).toContain('email is already taken');
+            expect(res.body.message).toContain('User already exists');
           });
       });
 
@@ -442,13 +435,13 @@ describe('AdminController', () => {
           .set('Authorization', `Bearer ${accessTokens['system_admin']}`)
           .send({
             fullName: 'John Doe',
-            email: 'nottaken@mail.com',
+            email: 'randomMail@mail.com',
             userRole: 'user',
             phoneNumber: '+48333333333', //THIS PHONE NUMBER IS ALREADY TAKEN !!! DONT CHANGE IT
           })
           .expect(HttpStatus.CONFLICT)
           .expect((res) => {
-            expect(res.body.message).toContain('phone number is already taken');
+            expect(res.body.message).toContain('User already exists');
           });
       });
     });

@@ -1,6 +1,7 @@
 import {
   ConflictException,
   ForbiddenException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -46,7 +47,7 @@ export class AdminService {
           `User ${userGroups} tried to create user with role ${userToCreate.userRole}`,
         );
         throw new ForbiddenException(
-          `user with roles ${userGroups} is not allowed to create user`,
+          'You are not allowed to create user with this role',
         );
       }
       this.logger.log(`Create user - permission check passed`);
@@ -64,6 +65,7 @@ export class AdminService {
       //Creating user
       const command = new AdminCreateUserCommand({
         Username: userToCreate.email,
+        DesiredDeliveryMediums: ['EMAIL'],
         UserAttributes: [
           {
             Name: CognitoProperties.PHONE_NUMBER,
@@ -81,12 +83,13 @@ export class AdminService {
             Name: CognitoProperties.PICTURE,
             Value: `https://pbs.twimg.com/media/DFem8K0UwAAuVlj.jpg`,
           },
-          // { Name: CognitoProperties.EMAIL_VERIFIED, Value: `True` },
         ],
+
         UserPoolId: this.configService.get('AWS_COGNITO_USER_POOL_ID'),
       });
-      const commandResult = await this.AWS_CLIENT.send(command);
-      this.logger.debug(commandResult);
+      await this.AWS_CLIENT.send(command);
+      this.logger.log(`User with email ${userToCreate.email} created`);
+      return HttpStatus.CREATED;
     } catch (error) {
       if (error instanceof ConflictException) throw error;
       if (error instanceof ForbiddenException) throw error;
