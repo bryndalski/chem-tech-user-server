@@ -5,19 +5,18 @@ import {
   IsEnum,
   IsNotEmpty,
   IsPhoneNumber,
-  Max,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 
 export class CreateUserDTO {
   @ApiProperty({
-    type: String,
     description: 'Full Name of user',
     example: 'John Doe',
   })
   @IsNotEmpty()
   @MinLength(3)
-  @Max(100)
+  @MaxLength(100)
   fullName: string;
 
   @ApiProperty({
@@ -29,7 +28,7 @@ export class CreateUserDTO {
   email: string;
 
   @ApiProperty({
-    type: () => Roles,
+    enum: Roles,
     description: 'Role of user',
     example: Roles.ADMIN,
   })

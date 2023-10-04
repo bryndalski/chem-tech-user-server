@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "amazon-cognito-identity-js": "^6.3.6"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.423.0"
   }
 }

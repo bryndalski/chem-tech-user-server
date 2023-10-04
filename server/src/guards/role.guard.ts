@@ -30,14 +30,12 @@ export class CognitoRolesGuard implements CanActivate {
        * Check user roles
        */
       const { user } = context.switchToHttp().getRequest();
-
       const { groups } = user;
       //Missing groups from token -> deny access
       //Wehn no groups are available returns NoGroupsAvailable (default false)
       if (!groups) {
         return false;
       }
-
       const FilterAllowRoles = () =>
         AllowedRoles.some((endpointRule) => groups.includes(endpointRule));
 
