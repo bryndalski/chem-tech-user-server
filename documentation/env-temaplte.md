@@ -35,3 +35,23 @@ Expected type: `string`
 ### Prefix
 
 indicates API prefix. For example for prefix `/api` and endpoint `/users` the full endpoint will be `/api/v1/users`
+
+# Test only
+
+```
+AWS_COGNITO_FAKE_USER_LOGIN
+AWS_COGNITO_FAKE_USER_PASSWORD
+AWS_COGNITO_USER_POOL_ID
+```
+
+### AWS_COGNITO_FAKE_USER_LOGIN
+
+Prefix for all test accounts. Please remeber to add prefix to all of your accounts
+
+Expected type: `string`
+
+### AWS_COGNITO_FAKE_USER_PASSWORD
+
+Password used for all test accounts. Remeber to set password which is easy to use
+
+Expected type: `string`

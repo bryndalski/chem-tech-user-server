@@ -8,5 +8,8 @@
     "start": "docker-compose -f ./docker/docker.compose.yaml up"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "amazon-cognito-identity-js": "^6.3.6"
+  }
 }

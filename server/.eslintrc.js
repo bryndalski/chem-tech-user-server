@@ -25,7 +25,6 @@ module.exports = {
   ignorePatterns: [
     'package.js',
     'package-lock.json',
-    '*.spec.ts',
     '.eslintrc.js',
     '**/migrations/**',
   ],
@@ -78,7 +77,8 @@ module.exports = {
       },
       {
         selector: 'interface',
-        format: ['camelCase'],
+        format: ['PascalCase'],
+        prefix: ['I'],
       },
     ],
     //no console logs
