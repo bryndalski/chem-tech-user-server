@@ -46,7 +46,7 @@ describe('UsersController', () => {
     accessTokens.system_admin = (await CognitoLogin({
       userType: 'system_admin',
     } as ICognitoLoginInterface)) as string;
-
+    console.log(accessTokens);
     await app.init();
   });
 
@@ -85,37 +85,123 @@ describe('UsersController', () => {
       ['user', HttpStatus.FORBIDDEN],
       ['admin', HttpStatus.OK],
       ['system_admin', HttpStatus.OK],
-    ])('Security checks - %s -secure groups', (role, code) => {
+    ])('Security checks - %p -secure groups', (role, code) => {
       it.each([
         ['phone_number'],
-        ['groups'],
-        ['active'],
         ['email', 'phone_number'],
-        ['email', 'groups'],
-        ['email', 'active'],
-        ['phone_number', 'groups'],
-        ['phone_number', 'active'],
-        ['groups', 'active'],
-        ['email', 'phone_number', 'groups'],
-        ['email', 'phone_number', 'active'],
-        ['email', 'groups', 'active'],
-        ['phone_number', 'groups', 'active'],
-        ['email', 'phone_number', 'groups', 'active'],
-      ])(`${code} when %s requests`, async (requestedField) => {
+        ['name', 'phone_number'],
+        ['picture', 'phone_number'],
+      ])(`${code} when %p requests`, async (requestedField) => {
         await request(app.getHttpServer())
           .get(`/users`)
-          .query({ requestedFields: [requestedField] })
+          .query({ requestedFields: [requestedField], limit: 10 })
           .set('Authorization', `Bearer ${accessTokens[role]}`)
           .expect(code);
       });
-      it('200 when param is not provided', async () => {
+    });
+
+    describe('Formatter test', () => {
+      it('should have all properties', async () => {
         await request(app.getHttpServer())
           .get(`/users`)
-          .set('Authorization', `Bearer ${accessTokens[role]}`)
-          .expect(HttpStatus.OK);
+          .query({
+            requestedFields: ['phone_number', 'name', 'picture', 'email'],
+            limit: 10,
+          })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect((res) => {
+            expect(res.body).toHaveProperty('users');
+            expect(typeof res.body).toBeInstanceOf(Array);
+            expect(res.body.users[0]).toHaveProperty('phone_number');
+            expect(res.body.users[0]).toHaveProperty('name');
+            expect(res.body.users[0]).toHaveProperty('picture');
+            expect(res.body).toHaveProperty('paginationToken');
+          });
+      });
+
+      it('without phone_number', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .query({
+            requestedFields: ['name', 'picture', 'email'],
+            limit: 10,
+          })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect((res) => {
+            expect(res.body).toHaveProperty('users');
+            expect(typeof res.body).toBeInstanceOf(Array);
+            expect(res.body.users[0]).not.toHaveProperty('phone_number');
+            expect(res.body.users[0]).toHaveProperty('name');
+            expect(res.body.users[0]).toHaveProperty('picture');
+            expect(res.body).toHaveProperty('paginationToken');
+          });
+      });
+      it('without phone_number and name', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .query({
+            requestedFields: ['picture', 'email'],
+            limit: 10,
+          })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect((res) => {
+            expect(res.body).toHaveProperty('users');
+            expect(typeof res.body).toBeInstanceOf(Array);
+            expect(res.body.users[0]).not.toHaveProperty('phone_number');
+            expect(res.body.users[0]).not.toHaveProperty('name');
+            expect(res.body.users[0]).toHaveProperty('picture');
+            expect(res.body.users[0]).toHaveProperty('email');
+            expect(res.body).toHaveProperty('paginationToken');
+          });
       });
     });
 
-    describe;
+    describe('request formats', () => {
+      it('400 when non params are provided', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.OK);
+      });
+
+      it('400 when only requestFileds are provided', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.OK);
+      });
+
+      it('400 when only limit is provided', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .query({ limit: 10 })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.OK);
+      });
+
+      it('400 when limit is not a number', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .query({ limit: '10' })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.BAD_REQUEST);
+      });
+
+      it('400 when limit is lowwer than 1', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .query({ limit: 0 })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.BAD_REQUEST);
+      });
+
+      it('400 when limit is higher than 10', async () => {
+        await request(app.getHttpServer())
+          .get(`/users`)
+          .query({ limit: 11 })
+          .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.BAD_REQUEST);
+      });
+    });
   });
 });

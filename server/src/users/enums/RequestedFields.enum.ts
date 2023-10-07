@@ -1,6 +1,6 @@
 export enum RequestedFields {
+  full_name = 'name',
   email = 'email',
   phone_number = 'phone_number',
-  user_groups = 'user_groups',
-  active = 'active',
+  picture = 'picture',
 }

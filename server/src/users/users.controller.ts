@@ -1,6 +1,7 @@
 import { Controller, Get, Query, UseGuards, Version } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -9,6 +10,7 @@ import { Roles } from '@/enums';
 import { CognitoAtuhGuard, CognitoRolesGuard } from '@/guards';
 import { RequestUsersDTO } from './dto/RequestUsers.dto';
 import { UsersService } from './users.service';
+import { RequestUserResponse } from './response/RequestUser.response';
 
 @Controller('users')
 @ApiTags('users')
@@ -21,6 +23,10 @@ export class UsersController {
   @Version('1')
   @ApiUnauthorizedResponse({
     description: 'Unauthorized',
+  })
+  @ApiOkResponse({
+    description: 'Users',
+    type: () => RequestUserResponse,
   })
   @UseGuards(CognitoRolesGuard)
   @AllowedRoles([Roles.ADMIN, Roles.SYSTEM_ADMIN, Roles.USER])
