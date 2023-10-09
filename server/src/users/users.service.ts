@@ -63,9 +63,15 @@ export class UsersService {
         message: `User with groups: ${groups} requested fields: ${details.requestedFields}`,
         atributed: details.requestedFields,
       });
+      this.logger.debug({
+        method: 'getUsers',
+        message: `User with groups: ${groups} requested fields: ${details.requestedFields}`,
+        AttributesToGet: [...details.requestedFields],
+      });
+      //Create cognito token
       const command = new ListUsersCommand({
         UserPoolId: this.configService.get('AWS_COGNITO_USER_POOL_ID'), // required
-        AttributesToGet: [...details.requestedFields, 'cognito:user_status'],
+        AttributesToGet: [...details.requestedFields],
         Limit: details.limit,
         ...(details.paginationToken && {
           PaginationToken: details.paginationToken,
@@ -82,7 +88,7 @@ export class UsersService {
         result,
       });
       return {
-        paginationToken: result.PaginationToken,
+        paginationToken: result.PaginationToken || null,
         users,
       };
     } catch (error) {
@@ -98,6 +104,12 @@ export class UsersService {
     }
   }
 
+  /**
+   * Format result before sending them to client
+   * @param atributes
+   * @param param1
+   * @returns
+   */
   private prepareResult(
     atributes: unknown[],
     { requestedFields }: RequestUsersDTO,

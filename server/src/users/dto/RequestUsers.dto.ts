@@ -8,7 +8,7 @@ import {
   Min,
 } from 'class-validator';
 import { RequestedFields } from '../enums/RequestedFields.enum';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class RequestUsersDTO {
   @ApiProperty({
@@ -17,8 +17,9 @@ export class RequestUsersDTO {
       'Fields to be returned in response. You need to have roles: "admin" or "system_admin" to access: "phone_number","groups","active"',
     enum: RequestedFields,
     isArray: true,
-    type: String,
   })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  @Transform(({ value }) => (Array.isArray(value) ? value : [value]), {})
   @IsEnum(RequestedFields, { each: true })
   requestedFields: RequestedFields[];
 

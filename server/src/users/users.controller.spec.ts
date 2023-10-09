@@ -46,7 +46,6 @@ describe('UsersController', () => {
     accessTokens.system_admin = (await CognitoLogin({
       userType: 'system_admin',
     } as ICognitoLoginInterface)) as string;
-    console.log(accessTokens);
     await app.init();
   });
 
@@ -85,13 +84,13 @@ describe('UsersController', () => {
       ['user', HttpStatus.FORBIDDEN],
       ['admin', HttpStatus.OK],
       ['system_admin', HttpStatus.OK],
-    ])('Security checks - %p -secure groups', (role, code) => {
+    ])('Security checks - %o -secure groups', (role, code) => {
       it.each([
-        ['phone_number'],
-        ['email', 'phone_number'],
-        ['name', 'phone_number'],
-        ['picture', 'phone_number'],
-      ])(`${code} when %p requests`, async (requestedField) => {
+        [['phone_number']],
+        [['email', 'phone_number']],
+        [['name', 'phone_number']],
+        [['picture', 'phone_number']],
+      ])(`${code} when %o requests`, async (requestedField) => {
         await request(app.getHttpServer())
           .get(`/users`)
           .query({ requestedFields: [requestedField], limit: 10 })
@@ -111,7 +110,6 @@ describe('UsersController', () => {
           .set('Authorization', `Bearer ${accessTokens['admin']}`)
           .expect((res) => {
             expect(res.body).toHaveProperty('users');
-            expect(typeof res.body).toBeInstanceOf(Array);
             expect(res.body.users[0]).toHaveProperty('phone_number');
             expect(res.body.users[0]).toHaveProperty('name');
             expect(res.body.users[0]).toHaveProperty('picture');
@@ -129,7 +127,6 @@ describe('UsersController', () => {
           .set('Authorization', `Bearer ${accessTokens['admin']}`)
           .expect((res) => {
             expect(res.body).toHaveProperty('users');
-            expect(typeof res.body).toBeInstanceOf(Array);
             expect(res.body.users[0]).not.toHaveProperty('phone_number');
             expect(res.body.users[0]).toHaveProperty('name');
             expect(res.body.users[0]).toHaveProperty('picture');
@@ -144,9 +141,9 @@ describe('UsersController', () => {
             limit: 10,
           })
           .set('Authorization', `Bearer ${accessTokens['admin']}`)
+          .expect(HttpStatus.OK)
           .expect((res) => {
             expect(res.body).toHaveProperty('users');
-            expect(typeof res.body).toBeInstanceOf(Array);
             expect(res.body.users[0]).not.toHaveProperty('phone_number');
             expect(res.body.users[0]).not.toHaveProperty('name');
             expect(res.body.users[0]).toHaveProperty('picture');
@@ -161,14 +158,14 @@ describe('UsersController', () => {
         await request(app.getHttpServer())
           .get(`/users`)
           .set('Authorization', `Bearer ${accessTokens['admin']}`)
-          .expect(HttpStatus.OK);
+          .expect(HttpStatus.BAD_REQUEST);
       });
 
       it('400 when only requestFileds are provided', async () => {
         await request(app.getHttpServer())
           .get(`/users`)
           .set('Authorization', `Bearer ${accessTokens['admin']}`)
-          .expect(HttpStatus.OK);
+          .expect(HttpStatus.BAD_REQUEST);
       });
 
       it('400 when only limit is provided', async () => {
@@ -176,7 +173,7 @@ describe('UsersController', () => {
           .get(`/users`)
           .query({ limit: 10 })
           .set('Authorization', `Bearer ${accessTokens['admin']}`)
-          .expect(HttpStatus.OK);
+          .expect(HttpStatus.BAD_REQUEST);
       });
 
       it('400 when limit is not a number', async () => {
