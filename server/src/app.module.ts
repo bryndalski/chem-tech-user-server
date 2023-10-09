@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/cognito.strategy';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { PicturesModule } from './pictures/pictures.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
     }),
     UsersModule,
+    PicturesModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
