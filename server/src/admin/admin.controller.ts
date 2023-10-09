@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards, Version } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  UseInterceptors,
+  Version,
+} from '@nestjs/common';
 import { AdminService } from './admin.service';
 import {
   ApiBadRequestResponse,
@@ -17,6 +24,7 @@ import { AllowedRoles } from '@/decorators';
 import { Roles } from '@enums/index';
 import { CreateUserDTO } from './dto/CreateUser.dto';
 import { Groups } from '@/decorators/groups.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('admin')
 @ApiTags('admin')
@@ -55,6 +63,7 @@ export class AdminController {
     description: 'Unauthorized',
   })
   @UseGuards(CognitoRolesGuard)
+  @UseInterceptors(FileInterceptor('profilePicture'))
   create(@Body() createUser: CreateUserDTO, @Groups() userGroups: string[]) {
     return this.adminService.createUser(createUser, userGroups);
   }

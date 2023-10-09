@@ -61,7 +61,6 @@ export class AdminService {
       }
 
       this.logger.log(`Create user - user does not exist`);
-
       //Creating user
       const command = new AdminCreateUserCommand({
         Username: userToCreate.email,
@@ -81,7 +80,7 @@ export class AdminService {
           },
           {
             Name: CognitoProperties.PICTURE,
-            Value: `https://pbs.twimg.com/media/DFem8K0UwAAuVlj.jpg`,
+            Value: `${userToCreate.profilePicture}`,
           },
         ],
 

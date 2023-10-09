@@ -15,6 +15,7 @@ This is a template for configuring environment variables in your application.
       - [AWS Access Key ID](#aws-access-key-id)
       - [AWS Default Region](#aws-default-region)
       - [AWS Cognito User Pool ID](#aws-cognito-user-pool-id)
+    - [AWS_S3_BUCKET=s](#aws_s3_buckets)
 
 ### Port
 
@@ -54,3 +55,8 @@ This is a template for configuring environment variables in your application.
 
 - Description: The user pool ID for AWS Cognito.
 - Example: `your-cognito-user-pool-id`
+
+### AWS_S3_BUCKET=s
+
+- Description: The S3 bucket name for AWS S3.
+- Example: `your-s3-bucket-name`

@@ -2,6 +2,7 @@ import { Controller, Get, Query, UseGuards, Version } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -23,6 +24,9 @@ export class UsersController {
   @Version('1')
   @ApiUnauthorizedResponse({
     description: 'Unauthorized',
+  })
+  @ApiOperation({
+    summary: 'Get users',
   })
   @ApiOkResponse({
     description: 'Users',

@@ -1,5 +1,5 @@
 import { Roles } from '@/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
@@ -43,4 +43,10 @@ export class CreateUserDTO {
   @IsPhoneNumber('PL')
   @IsNotEmpty()
   phoneNumber: string;
+
+  @ApiPropertyOptional({
+    description: 'User profile url',
+    required: true,
+  })
+  profilePicture: string;
 }
